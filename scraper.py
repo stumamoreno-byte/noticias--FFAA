@@ -2,8 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 
-# Diccionario de fuentes con sus URLs específicas
+# Diccionario de fuentes
 urls = {
+    "Estado Mayor Conjunto": "https://www.argentina.gob.ar/estado-mayor-conjunto-de-las-fuerzas-armadas/noticias",
     "Ejército Argentino": "https://www.argentina.gob.ar/ejercito/noticias",
     "Armada Argentina": "https://www.argentina.gob.ar/armada/noticias",
     "Fuerza Aérea": "https://www.argentina.gob.ar/fuerzaaerea/noticias",
@@ -16,63 +17,119 @@ html_content = f"""
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitor FFAA Argentina</title>
+    <title>Archivo Histórico y Actualidad - FF.AA. Argentina</title>
     <style>
-        body {{ font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; padding: 20px; background-color: #f4f4f4; color: #333; }}
-        .container {{ max-width: 900px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }}
-        h1 {{ text-align: center; color: #1a2a3a; border-bottom: 3px solid #004a80; padding-bottom: 10px; }}
-        .fuerza-seccion {{ margin-bottom: 30px; border-left: 6px solid #004a80; padding-left: 20px; }}
-        h2 {{ color: #004a80; text-transform: uppercase; font-size: 1.4rem; }}
-        ul {{ list-style: none; padding: 0; }}
-        li {{ margin-bottom: 12px; background: #f9f9f9; padding: 10px; border-radius: 4px; transition: 0.3s; }}
-        li:hover {{ background: #f0f7ff; transform: translateX(5px); }}
-        a {{ text-decoration: none; color: #333; font-weight: 600; display: block; }}
-        .fecha {{ font-size: 0.9rem; color: #666; text-align: center; margin-bottom: 20px; }}
-        .no-news {{ color: #999; font-style: italic; }}
+        :root {{
+            --primario: #0b131a;
+            --secundario: #1c2e3e;
+            --acento: #daa520; /* Dorado militar para resaltar */
+            --fondo: #121212;
+            --tarjeta: #1e1e1e;
+            --texto: #e0e0e0;
+        }}
+        body {{ 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--fondo); 
+            margin: 0; padding: 0; color: var(--texto);
+        }}
+        header {{
+            background: linear-gradient(180deg, var(--primario) 0%, #000 100%);
+            color: white; padding: 50px 20px; text-align: center;
+            border-bottom: 2px solid var(--acento);
+        }}
+        .container {{ max-width: 1200px; margin: -20px auto 50px; padding: 0 20px; }}
+        .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }}
+        .card {{ 
+            background: var(--tarjeta); border-radius: 8px; overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5); border: 1px solid #333;
+        }}
+        .card-header {{
+            background: var(--secundario); padding: 15px;
+            border-bottom: 2px solid var(--acento);
+        }}
+        h2 {{ margin: 0; font-size: 1.1rem; letter-spacing: 1px; color: var(--acento); text-transform: uppercase; }}
+        ul {{ list-style: none; padding: 0; margin: 0; }}
+        li {{ border-bottom: 1px solid #2a2a2a; transition: 0.2s; }}
+        li:hover {{ background: #252525; }}
+        li a {{ 
+            display: block; padding: 18px 20px; color: #ccc; 
+            text-decoration: none; font-size: 0.9rem; font-weight: 500;
+        }}
+        li a:hover {{ color: var(--acento); }}
+        .footer {{ text-align: center; padding: 40px; color: #555; font-size: 0.8rem; }}
+        .status {{ font-size: 0.7rem; color: #888; text-transform: uppercase; margin-top: 5px; }}
     </style>
 </head>
 <body>
+    <header>
+        <h1 style="margin:0; font-size: 2rem;">REPOSITORIO DE NOTICIAS FF.AA.</h1>
+        <p style="color: var(--acento); font-weight: bold;">Historial Completo y Últimas Publicaciones</p>
+        <div style="margin-top:15px; font-size: 0.8rem; color: #888;">
+            Actualización del sistema: {datetime.datetime.now().strftime('%d/%m/%Y %H:%M')}
+        </div>
+    </header>
+
     <div class="container">
-        <h1>Actualidad de las Fuerzas Armadas</h1>
-        <p class="fecha">Actualizado el: {datetime.datetime.now().strftime('%d/%m/%Y %H:%M')} (Hora Local)</p>
+        <div class="grid">
 """
 
-headers = {'User-Agent': 'Mozilla/5.0'}
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
 
 for fuerza, url in urls.items():
-    html_content += f"<div class='fuerza-seccion'><h2>{fuerza}</h2><ul>"
+    html_content += f"""
+            <div class="card">
+                <div class="card-header">
+                    <h2>{fuerza}</h2>
+                    <div class="status">Últimas entradas detectadas</div>
+                </div>
+                <ul>"""
     try:
-        r = requests.get(url, headers=headers, timeout=15)
+        r = requests.get(url, headers=headers, timeout=20)
         soup = BeautifulSoup(r.text, 'html.parser')
         
-        # Intentamos buscar noticias en diferentes formatos posibles del sitio argentina.gob.ar
-        items = soup.find_all('a', class_='panel-default') or \
-                soup.find_all('a', class_='card') or \
-                soup.select('.views-row a')
+        # Buscamos de forma agresiva cualquier link que parezca una noticia
+        # argentina.gob.ar usa mucho 'panel-default' y 'card-title'
+        items = soup.select('a.panel-default') or \
+                soup.select('.views-row a') or \
+                soup.select('.noticia a') or \
+                soup.find_all('a', class_='card')
 
-        encontradas = 0
+        count = 0
         for item in items:
-            if encontradas >= 5: break
+            if count >= 6: break # Traemos hasta 6 noticias por sección
             
-            titulo_tag = item.find('h2') or item.find('h3') or item.find('h4') or item.find('div', class_='h3')
+            # Buscamos el texto del título dentro del link o en sus hijos
+            titulo_tag = item.find(['h2', 'h3', 'h4', 'div', 'p'])
+            titulo = ""
+            
             if titulo_tag:
                 titulo = titulo_tag.get_text(strip=True)
-                href = item['href']
-                link = href if href.startswith('http') else "https://www.argentina.gob.ar" + href
-                
-                html_content += f"<li><a href='{link}' target='_blank'>{titulo}</a></li>"
-                encontradas += 1
+            else:
+                titulo = item.get_text(strip=True)
+
+            # Si el título es muy corto o vacío, lo saltamos
+            if len(titulo) < 10: continue
+
+            href = item['href']
+            link = href if href.startswith('http') else "https://www.argentina.gob.ar" + href
+            
+            html_content += f'<li><a href="{link}" target="_blank">{titulo}</a></li>'
+            count += 1
         
-        if encontradas == 0:
-            html_content += "<li class='no-news'>No se encontraron noticias recientes en esta sección.</li>"
+        if count == 0:
+            html_content += "<li><a href='#'>Sin noticias disponibles en el servidor en este momento.</a></li>"
             
     except Exception as e:
-        html_content += f"<li class='no-news'>Error al conectar con la fuente.</li>"
+        html_content += f"<li><a href='#'>Error de conexión con la fuente oficial.</a></li>"
     
     html_content += "</ul></div>"
 
 html_content += """
-        <p style="text-align:center; font-size: 0.8rem; color: #aaa; margin-top: 40px;">Sistema Automático de Monitoreo - stumamoreno-byte</p>
+        </div>
+        <div class="footer">
+            SISTEMA AUTOMATIZADO DE SEGUIMIENTO DE DEFENSA NACIONAL<br>
+            Acceso a información pública - República Argentina
+        </div>
     </div>
 </body>
 </html>
