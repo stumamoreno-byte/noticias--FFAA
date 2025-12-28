@@ -1,7 +1,7 @@
 name: Actualizar Noticias
 on:
   schedule:
-    - cron: '0 12 * * *'
+    - cron: '0 12 * * *' # 9 AM Argentina
   workflow_dispatch:
 jobs:
   build:
@@ -24,3 +24,22 @@ jobs:
           git add index.html
           git commit -m "Actualización automática" || exit 0
           git push
+      
+      - name: Enviar Mail a Sofi
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{secrets.MAIL_USERNAME}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: "⚠️ REPORTE MILITAR: Noticias Actualizadas"
+          to: sofitumamoreno@gmail.com
+          from: "Monitor de Defensa Argentino"
+          body: |
+            Hola, el sistema ha detectado y actualizado las noticias de las FF.AA.
+            
+            Puedes revisar el boletín completo aquí: 
+            https://stumamoreno-byte.github.io/noticias--FFAA/
+            
+            Fuentes procesadas: EMCO, Ejército, Armada, Fuerza Aérea y CAECOPAZ.
