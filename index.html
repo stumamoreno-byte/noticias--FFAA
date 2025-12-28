@@ -4,27 +4,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitor FFAA Argentina</title>
+    <title>Archivo Histórico y Actualidad - FF.AA. Argentina</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; padding: 20px; background-color: #f4f4f4; color: #333; }
-        .container { max-width: 900px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #1a2a3a; border-bottom: 3px solid #004a80; padding-bottom: 10px; }
-        .fuerza-seccion { margin-bottom: 30px; border-left: 6px solid #004a80; padding-left: 20px; }
-        h2 { color: #004a80; text-transform: uppercase; font-size: 1.4rem; }
-        ul { list-style: none; padding: 0; }
-        li { margin-bottom: 12px; background: #f9f9f9; padding: 10px; border-radius: 4px; transition: 0.3s; }
-        li:hover { background: #f0f7ff; transform: translateX(5px); }
-        a { text-decoration: none; color: #333; font-weight: 600; display: block; }
-        .fecha { font-size: 0.9rem; color: #666; text-align: center; margin-bottom: 20px; }
-        .no-news { color: #999; font-style: italic; }
+        :root {
+            --primario: #0b131a;
+            --secundario: #1c2e3e;
+            --acento: #daa520; /* Dorado militar para resaltar */
+            --fondo: #121212;
+            --tarjeta: #1e1e1e;
+            --texto: #e0e0e0;
+        }
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--fondo); 
+            margin: 0; padding: 0; color: var(--texto);
+        }
+        header {
+            background: linear-gradient(180deg, var(--primario) 0%, #000 100%);
+            color: white; padding: 50px 20px; text-align: center;
+            border-bottom: 2px solid var(--acento);
+        }
+        .container { max-width: 1200px; margin: -20px auto 50px; padding: 0 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+        .card { 
+            background: var(--tarjeta); border-radius: 8px; overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5); border: 1px solid #333;
+        }
+        .card-header {
+            background: var(--secundario); padding: 15px;
+            border-bottom: 2px solid var(--acento);
+        }
+        h2 { margin: 0; font-size: 1.1rem; letter-spacing: 1px; color: var(--acento); text-transform: uppercase; }
+        ul { list-style: none; padding: 0; margin: 0; }
+        li { border-bottom: 1px solid #2a2a2a; transition: 0.2s; }
+        li:hover { background: #252525; }
+        li a { 
+            display: block; padding: 18px 20px; color: #ccc; 
+            text-decoration: none; font-size: 0.9rem; font-weight: 500;
+        }
+        li a:hover { color: var(--acento); }
+        .footer { text-align: center; padding: 40px; color: #555; font-size: 0.8rem; }
+        .status { font-size: 0.7rem; color: #888; text-transform: uppercase; margin-top: 5px; }
     </style>
 </head>
 <body>
+    <header>
+        <h1 style="margin:0; font-size: 2rem;">REPOSITORIO DE NOTICIAS FF.AA.</h1>
+        <p style="color: var(--acento); font-weight: bold;">Historial Completo y Últimas Publicaciones</p>
+        <div style="margin-top:15px; font-size: 0.8rem; color: #888;">
+            Actualización del sistema: 28/12/2025 05:00
+        </div>
+    </header>
+
     <div class="container">
-        <h1>Actualidad de las Fuerzas Armadas</h1>
-        <p class="fecha">Actualizado el: 28/12/2025 04:51 (Hora Local)</p>
-<div class='fuerza-seccion'><h2>Ejército Argentino</h2><ul><li class='no-news'>No se encontraron noticias recientes en esta sección.</li></ul></div><div class='fuerza-seccion'><h2>Armada Argentina</h2><ul><li class='no-news'>No se encontraron noticias recientes en esta sección.</li></ul></div><div class='fuerza-seccion'><h2>Fuerza Aérea</h2><ul><li><a href='https://www.argentina.gob.ar/noticias/f-16-fighting-falcon-los-nuevos-custodios-del-cielo-argentino' target='_blank'>F-16 Fighting Falcon: los nuevos custodios del cielo argentino</a></li><li><a href='https://www.argentina.gob.ar/noticias/f-16-de-la-fuerza-aerea-argentina-un-pasaje-historico-sobre-la-ciudad-autonoma-de-buenos' target='_blank'>F-16 de la Fuerza Aérea Argentina: un pasaje histórico sobre la Ciudad Autónoma de Buenos Aires</a></li><li><a href='https://www.argentina.gob.ar/noticias/mision-cumplida-las-primeras-6-aeronaves-f-16-fighting-falcon-pisaron-suelo-argentino' target='_blank'>Misión cumplida: Las primeras 6 aeronaves F-16 Fighting Falcon pisaron suelo argentino</a></li><li><a href='https://www.argentina.gob.ar/noticias/la-fuerza-aerea-argentina-incorporo-dos-helicopteros-bell-407-gxi' target='_blank'>La Fuerza Aérea Argentina incorporó dos helicópteros Bell 407 GXI</a></li><li><a href='https://www.argentina.gob.ar/noticias/comenzo-el-ejercicio-fenix-2025' target='_blank'>Comenzó el Ejercicio Fénix 2025</a></li></ul></div><div class='fuerza-seccion'><h2>CAECOPAZ</h2><ul><li class='no-news'>No se encontraron noticias recientes en esta sección.</li></ul></div>
-        <p style="text-align:center; font-size: 0.8rem; color: #aaa; margin-top: 40px;">Sistema Automático de Monitoreo - stumamoreno-byte</p>
+        <div class="grid">
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Estado Mayor Conjunto</h2>
+                    <div class="status">Últimas entradas detectadas</div>
+                </div>
+                <ul><li><a href='#'>Sin noticias disponibles en el servidor en este momento.</a></li></ul></div>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Ejército Argentino</h2>
+                    <div class="status">Últimas entradas detectadas</div>
+                </div>
+                <ul><li><a href='#'>Sin noticias disponibles en el servidor en este momento.</a></li></ul></div>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Armada Argentina</h2>
+                    <div class="status">Últimas entradas detectadas</div>
+                </div>
+                <ul><li><a href='#'>Sin noticias disponibles en el servidor en este momento.</a></li></ul></div>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Fuerza Aérea</h2>
+                    <div class="status">Últimas entradas detectadas</div>
+                </div>
+                <ul><li><a href='#'>Sin noticias disponibles en el servidor en este momento.</a></li></ul></div>
+            <div class="card">
+                <div class="card-header">
+                    <h2>CAECOPAZ</h2>
+                    <div class="status">Últimas entradas detectadas</div>
+                </div>
+                <ul><li><a href='#'>Sin noticias disponibles en el servidor en este momento.</a></li></ul></div>
+        </div>
+        <div class="footer">
+            SISTEMA AUTOMATIZADO DE SEGUIMIENTO DE DEFENSA NACIONAL<br>
+            Acceso a información pública - República Argentina
+        </div>
     </div>
 </body>
 </html>
